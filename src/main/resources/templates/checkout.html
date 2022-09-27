@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+<title>Document</title>
+<script src="/js/AddressValidation.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg" style="background-color: #c3f0f7;">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#"> <img
+				th:src="@{/images/sslogo.jpg}" src="../static/images/sslogo.jpg"
+				width="auto" height="30" class="d-inline-block align-top" alt="" />
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+				<h4>SS E-commerce</h4>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto"></ul>
+					<ul class="navbar-nav">
+						<li class="nav-item active"><a class="navbar-brand"
+							th:href="@{/}" href="#">Home</a></li>
+						<li class="nav-item active"><a class="navbar-brand"
+							th:href="@{/shop}" href="#">Shop</a></li>
+							<li class="nav-item active"><a class="navbar-brand"
+							th:href="@{/cart}" href="#">Cart</a></li>
+						<li class="nav-item active"><span class="navbar-brand"
+							th:text="${cartCount}">0</span></li>
+						<li class="nav-item active"><a class="btn btn-outline-primary"
+							sec:authorize="isAnonymous()" th:href="@{/login}" href="#">Login</a></li>					
+						<!-- <li class="nav-item active"><a class="navbar-brand"
+							sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#">Logout</a></li> -->
+						
+						<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" sec:authentication="name">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!-- <a class="pl-3" th:href="@{/password}">Passwor</a> -->
+                <!-- <div class="dropdown-divider"></div> -->
+                <a class="pl-3" th:href="@{/logout}">Logout</a>
+            </div>
+        </li>
+							</ul>
+							
+		</div>
+		</div>
+	</nav>
+	<div class="container py-6">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col">
+				<div class="card my-4 shadow-4">
+					<div class="row g-0">
+						<div class="col-xl-6 d-xl-block bg-image">
+							<img src="https://mdbcdn.b-cdn.net/img/Others/extended-example/delivery.webp"
+								alt="Sample photo" class="img-fluid" />
+							<div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
+								<div class=" justify-content-center align-items-center h-100">
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6">
+							<div class="card-body p-md-6 text-black">
+								<br>
+								<h3 class="mb-4 ">Address</h3>
+								<div class="row">
+									<div class="col-md-6 mb-4">
+				<form th:action="@{/success}" th:object="${address}" method="post" name="regform1" th:onsubmit="return validateFormforAddress()">
+					<div class="form-outline">
+												<input type="text" id="firstName" name="firstName" 
+													class="form-control form-control-lg" /> <label
+													class="firstName" for="firstName">First name</label><br>
+													<span class="error" id="erroraddname"></span>
+											</div>
+									</div>
+									<div class="col-md-6 mb-4">
+										<div class="form-outline">
+											<input type="text" id="lastName" name="lastName" 
+												class="form-control form-control-lg" /> <label
+												class="lastName" for="lastName">Last name</label><br>
+												<span class="error" id="erroraddname1"></span>
+										</div>
+									</div>
+								</div>
+								<div class="form-outline mb-4">
+									<input type="text" id="phoneNumber" name="phoneNumber" 
+										class="form-control form-control-lg" /> <label
+										class="phoneNumber" for="phoneNumber">Phone Number</label><br>
+										<span class="error" id="errorphn"></span>
+								</div>
+								<div class="form-outline mb-4">
+									<input type="text" id="email" name="email" class="form-control form-control-lg" /> <label class="email"
+										for="email">E-mail</label><br>
+										<span class="error" id="erroremail1"></span>
+										</div>								
+			<div class="form-outline mb-4">
+				
+                    <textarea class="form-control" rows="5"  name="Address" id="Address"></textarea>
+                    <label for="description">Enter Address</label><br>
+              <span class="error" id="erroradd1"></span>
+                </div>
+	     <!-- <div class="form-outline mb-4">
+									<input type="text" id="Address" name="Address" 
+										class="form-control form-control-lg" /> <label
+										class="Address" for="Address">Address(city/town)</label><br>
+										<span class="error" id="erroradd2"></span>
+								</div> -->
+							</div>
+						</div>
+					</div><br>
+					<!--Grid column-->
+					<!--Grid column-->
+					<div class="card p-3">
+						<p class="mb-0 fw-bold h4" align="center">Payment Methods</p>
+					</div>
+					<div class="col-12"><br>
+							<div class="card-body border p-0">
+								<div class="collapse show p-3 pt-0" id="collapseExample">
+									<div class="row">
+
+										<div class="col-lg-12">
+											<form action="" class="form">
+												<div class="row" align="left">
+													<div class="col-12">
+														<ul class="list-group list-group-flush">
+															<li
+																class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Total
+																number of products <span th:text="${cartCount}"></span>
+															</li>
+
+															<li
+																class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+																
+																Amount Payable <span>₹<span th:text="${total}"></span></span>
+															</li>
+															<li
+																class="list-group-item d-flex justify-content-between align-items-left px-0">
+																Shipping <span>Free Shipping</span></ul><br>
+															</li>
+															<li
+																class="list-group-item d-flex justify-content-between align-items-left px-0">
+																Your Order Delivery date is : <span th:text="${DeliveryDate}"></span></ul><br>
+															</li>
+															<span class="fw-bold">Credit Card/Debit Card</span>
+															<div class="row">
+															<div class="col-6">
+															<div class="form__div"><br>
+															
+																<input type="text"id="cardNumber" name="cardNumber" class="cardNumber" placeholder="Card Number" >
+																<label for="cardNumber" class="cardNumber">Card Number</label><br>
+																<span class="error" id="errorcard"></span>
+															</div>
+																			
+														<div class="form__div">
+															<input type="text"id="monthAndYear" name="monthAndYear" class="monthAndYear" placeholder=" MM /yyyy">
+															<label for="monthAndYear" class="monthAndYear">MM /yyyy</label><br>
+															<span class="error" id="errordate"></span>
+														</div>
+													</div>
+
+		<div class="col-6"><br>
+		<div class="form__div">	
+			<input type="password"id="cvvCode" name="cvvCode" class="cvvCode" placeholder=" cvv code"> 
+			<label for="cvvCode" class="cvvCode">cvv code</label><br>
+			<span class="error" id="errorcvv"></span>
+					</div>
+					
+		
+			<div class="form__div">
+				<input type="text"id="cardName" name="cardName" class="cardName" placeholder="your name on the card">
+				<label for="cardName" class="cardName">your name on the card</label><br>
+				<span class="error" id="errorcardname"></span>
+						</div>
+						</div></div>
+				<!-- <div class="col-6">
+				<div class="form__div">
+				<input type="text"id="total" name="total" th:text="${total}" class="total">
+				<label for="total" class="total">total</label>
+				</div></div> -->										
+															
+		<div class="col-14">
+            
+	<div><strong>The total amount of Order</strong> <strong>
+			<p class="mb-0">(including VAT)</p></strong>
+	</div><br>
+	 <div class="form-group">
+
+               
+	<div class="form-group">
+	<input type="text" th:value="${total}" name="total" id="total">
+				
+	<span><strong>₹<span th:text="${total}"></span></strong></span></li></ul><br>
+	<span class="error" id="errortotal"></span>
+	<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3"><br><br>
+			</div></div>
+			<button type="submit" class="btn btn-primary w-100">Order Placed</button>  </div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div><br>
+				 		</div>					
+	                  </form>
+					</div>
+				</div>
+			</div>
+			<!--Grid column-->
+		</div>
+	
+	<!--Grid row-->
+	</section>
+	<!--Section: Block Content-->
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+</body>
+</html>

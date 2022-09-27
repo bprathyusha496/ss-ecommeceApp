@@ -1,0 +1,65 @@
+package com.rgt.app.models;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class Category {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "category_id")
+	private int id;
+	private String name;
+	@JsonIgnore
+	@ManyToOne(fetch =FetchType.LAZY)
+	@JoinColumn(name = "id",referencedColumnName = "id")
+	private Product product;
+	
+	public Category() {
+		super();
+	}
+	
+	public Category(int id, String name, Product product) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.product = product;
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", product=" + product + "]";
+	}
+
+	
+	
+
+}

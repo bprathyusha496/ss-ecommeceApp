@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Document</title>
+    
+</head>
+<body>
+<!-- <h1 style="color:#858a78;">E-commerce</h1> -->
+<nav class="navbar navbar-expand-lg" style="background-color: #d9d9d9; font-size: 10px " >
+    <div class="container-fluid">
+    <!-- <h3 style="color:#751aff;">E-COMMERCE -->
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/sslogo.jpg}"  src="../static/images/sslogo.jpg" width="auto" height="40" class="d-inline-block align-top rounded-circle" alt=""/>
+        </a></h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h4>SS E-commerce</h4>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+           <ul class="navbar-nav">
+                
+                <li class="nav-item active" >
+                    <a class="navbar-brand" th:href="@{/shop}" href="#">Shop</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="navbar-brand" th:href="@{/register}" href="#">Sign-Up</a>
+                </li>
+                <li class="nav-item active"><a class="btn btn-outline-primary"
+							sec:authorize="isAnonymous()" th:href="@{/login}" href="#">Login</a></li>					
+						
+						<li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+            <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" sec:authentication="name">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+               
+                <a class="pl-3" th:href="@{/logout}">Logout</a>
+            </div>
+        </li>
+              <!--  <li class="nav-item active">
+                    <a class="navbar-brand" th:href="@{/cart}" href="#">CART</a>
+                </li>
+                 <li class="nav-item active">
+                    <span class="navbar-brand" th:text="${cartCount}">0</span>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="">        
+  <img src="https://www.huptechweb.com/wp-content/uploads/2020/08/huptech-web-blog-3-1536x768.jpg" class="img-fluid" alt="Responsive image" width=1800 height=100/>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
