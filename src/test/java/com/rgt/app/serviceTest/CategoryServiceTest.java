@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.rgt.app.models.Category;
-import com.rgt.app.models.Product;
 import com.rgt.app.repository.CategoryRepository;
 import com.rgt.app.service.CategoryService;
 
@@ -38,11 +37,11 @@ public class CategoryServiceTest {
 		Mockito.when(categoryRepository.save(category)).thenReturn(category);
 		categoryService.addCategory(category); 
 	}
-	
+	 
 	@Test
 	public void whenFindAll_thenReturnCategoryList() {
 
-	Category c=new Category();
+	Category c=new Category(); 
 	c.setId(1);
 
 	    List<Category> expectedDisplay = Arrays.asList(c);
@@ -63,7 +62,7 @@ public class CategoryServiceTest {
 
 	}
 	
-
+ 
 	@Test
 	public void deletebyIdtest() {
 		categoryService.removeCategoryById(1);

@@ -35,15 +35,15 @@ public class HomeController {
 	@Autowired
 	private EmailSenderService emailSenderService;
 	
-	@GetMapping("/") 
-	public String home(Model model) {  
+	@GetMapping("/")  
+	public String home(Model model) {   
 		model.addAttribute("cartCount",GlobalData.cart.size());
-		
+		   
 		LocalDate currentdate = LocalDate.now();
 		List<Receipt> rec=receiptRepositoy.findAll();
 		
 	   for(Receipt re:rec) {
-	   if(re.getStatusId()==0) {
+	   if(re.getStatusId()==0) { 
 		   
 	   if(re.getConfirm().equals("confirm") && (currentdate.isEqual(LocalDate.from(re.getDeliveredDate().minusDays(2))))){
 		   
@@ -51,14 +51,13 @@ public class HomeController {
 	        receiptRepositoy.save(re);
 	    emailSenderService.sendEmail(re.getEmail(),"SS-ecommerce",("Hi..\n"+"Dear customer "+"\n"+"Your order is in our hyderabad store, Delivered at "+re.getDeliveredDate()+"\n"+"Please be available.."));
         System.out.println("email is working.. ");
-        
+         
 		} 
-	   
-	   }
+	     }
 	   }
 		return "index";
 	}
-	@GetMapping("/shop")  
+	@GetMapping("/shop")   
 	public String Shop(Model model) {
 		
 		  model.addAttribute("categories", categoryService.getallCategory());
@@ -66,13 +65,13 @@ public class HomeController {
 		  model.addAttribute("cartCount",GlobalData.cart.size());
 
 		 return "shop";
-	}
+	} 
 
 	@GetMapping("/shop/category/{id}")
 	public String ShopByCategory(Model model , @PathVariable int id) {
 		  model.addAttribute("categories", categoryService.getallCategory());
 		  model.addAttribute("products",productService.getAllProductsByCategoryById(id));
-		  model.addAttribute("cartCount",GlobalData.cart.size());
+		  model.addAttribute("cartCount",GlobalData.cart.size()); 
 		
 		return "shop";
 	}
@@ -80,19 +79,20 @@ public class HomeController {
 	public String viewProduct(Model model,@PathVariable int id) {
 		model.addAttribute("product", productService.getProductById(id).get());
 		model.addAttribute("cartCount",GlobalData.cart.size());
+  
+		return "viewProduct"; 
+			} 
 
-		return "viewProduct";
-			}
-	
-
-	@GetMapping("/getbyemail/{email}")
-	public String detailsofuser(@PathVariable String email, Model model,Principal principal) {
-		//User u=(userRepository.findByemail(principal.getName()));
-		
-		model.addAttribute("useremail",receiptRepositoy.getByEmail(email));
-		System.out.println(email);
-		
-		return "cart";
-		
-	}
+			/*
+			 * @GetMapping("/getbyemail/{email}") public String detailsofuser(@PathVariable
+			 * String email, Model model,Principal principal) { //User
+			 * u=(userRepository.findByemail(principal.getName()));
+			 * 
+			 * model.addAttribute("useremail",receiptRepositoy.getByEmail(email));
+			 * System.out.println(email);
+			 * 
+			 * return "cart";
+			 * 
+			 * }
+			 */
 	}

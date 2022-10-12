@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +38,18 @@ public class CartController {
 	@Autowired
 	ReceiptRepositoy receiptRepositoy;
 
-	@GetMapping("/addToCart/{id}") 
+	@GetMapping("/addToCart/{id}")  
 	public String addToCart(@PathVariable int id, Model model, Principal principal) {
 		User user = userRepository.findByemail(principal.getName());
-		Receipt uu = new Receipt();
-		uu.setConfirm("pending");
-		uu.setProductId(id);
-
-		uu.setUser(user.getId());
+		Receipt uu = new Receipt(); 
+		uu.setConfirm("pending");  
+		uu.setProductId(id); 
+	//	uu.setUser(user.getId());        //for testing it is in comment
 		receiptRepositoy.save(uu);
 		GlobalData.cart.add(productService.getProductById(id).get());
-		return "redirect:/shop";
-	}
+		return "redirect:/shop"; 
+		
+	} 
 
 	/*
 	 * @GetMapping("/cart") public String cartGet(Model model) {
@@ -61,29 +59,26 @@ public class CartController {
 	 * = GlobalData.cart.stream().mapToDouble(Product::getPrice).sum();
 	 * System.out.println(total); model.addAttribute("cart", GlobalData.cart);
 	 * return "cart"; }
-	 */
+	 */ 
 	@GetMapping("/cart")
 	public String cartGet(Model model, Principal principal) {
 		
 		model.addAttribute("cart", GlobalData.cart);
 		List<Product> pr = productReposiory.findAll();
-
 		User objj = userRepository.findByemail(principal.getName());
 		List<Receipt> receipt = receiptRepositoy.findAll();
 		
 		for (Receipt re : receipt) {
-			for (Product p : pr) {
+			for (Product p : pr) { 
 				if (re.getConfirm().equals("pending") && re.getUser() == (objj.getId())&& re.getProductId() == p.getId()) {
 					GlobalData.cart.add(productService.getProductById(p.getId()).get());
-
 					model.addAttribute("cart", GlobalData.cart);
 					model.addAttribute("total", GlobalData.cart.stream().mapToDouble(Product::getPrice).sum());
 					Double total = GlobalData.cart.stream().mapToDouble(Product::getPrice).sum();
 					System.out.println(total);
 					model.addAttribute("cartCount", GlobalData.cart.size());
 				}
-
-			}
+			} 
 		}
 		/*
 		 * for (Receipt re : receipt) { for (Product p : pr) { if
@@ -96,7 +91,6 @@ public class CartController {
 		 */
 		return "cart";
 	}
-
 	@GetMapping("/yourorders")
 	public String cartGet1(Model model, Principal principal) {
 		model.addAttribute("cart", GlobalData.cart);
@@ -111,8 +105,9 @@ public class CartController {
 			GlobalData.cart.add(productService.getProductById(p.getId()).get());
 					
 				}
-
-			}}
+ 
+			}
+			}
 		
 
 		return "Orders";
@@ -156,7 +151,7 @@ public class CartController {
 
 	@GetMapping("/cart/addItem/{id}")
 	public String cartItemadd(@PathVariable int id, Principal principal) {
-		System.out.println(principal.getName());
+		System.out.println(principal.getName()); 
 		User objj = userRepository.findByemail(principal.getName());
 		Product pd = productReposiory.findById(id).get();
 		pd.setUser(objj);
@@ -183,7 +178,6 @@ public class CartController {
 				break;
 
 			}
-
 		}
 
 		return "redirect:/cart";
@@ -224,7 +218,7 @@ public class CartController {
 		r.setDeliveredDate(r.getOrderDate().plusDays(5));
 		model.addAttribute("check");
 
-		return "checkout";
+		return "checkout"; 
 	}
 
 	@PostMapping("/success")

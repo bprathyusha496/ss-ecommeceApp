@@ -1,20 +1,27 @@
 package com.rgt.app;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.rgt.app.configuration.CustomUserDetail;
-import com.rgt.app.configuration.CustomUserDetailService;
-import com.rgt.app.configuration.SecurityConfigure;
-import com.rgt.app.configuration.googleOAuth2SuccessHandler;
-//@EnableAutoConfiguration(exclude = {SecurityConfigure.class, googleOAuth2SuccessHandler.class,CustomUserDetailService.class,CustomUserDetail.class })
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class ECommerceApplication01ApplicationTests {
  
 	@Test  
-	void contextLoads() { 
+	void contextLoads() {  
+	}
+	
+	@Test
+	public void testMain() throws IOException { 
+	    System.out.println("main");
+	    String[] args = null;
 	}
 
+	@Test
+	public void ECommerceApplication01ApplicationTest() {
+		ECommerceApplication01Application.main(new String[] {});
+	}
+	
 }

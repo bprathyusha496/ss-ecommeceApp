@@ -11,7 +11,7 @@ import com.rgt.app.repository.CategoryRepository;
 
 @Service
 public class CategoryService {  
-	@Autowired 
+	@Autowired  
 	CategoryRepository categoryRepository;
 	
 	public List<Category>getallCategory(){

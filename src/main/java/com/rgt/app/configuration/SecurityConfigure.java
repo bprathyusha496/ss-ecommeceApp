@@ -10,15 +10,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@SuppressWarnings("deprecation")
 @Configuration
 
 @EnableWebSecurity
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 
-	@Autowired
+	@Autowired 
 	private googleOAuth2SuccessHandler googleOAuth2SuccessHandler;
 
 	@Autowired
@@ -27,9 +27,9 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/shop", "/register","/login", "/admin","/shop/**").permitAll()
-		       .antMatchers("/admin/**").hasRole("ADMIN").anyRequest().authenticated()
+		       .antMatchers("/ad/**").hasRole("ADMIN").anyRequest().authenticated()
 		        .and()
-				.formLogin()
+				.formLogin() 
 				.loginPage("/login")
 				.permitAll()
 			 	.failureUrl("/login?error=true").defaultSuccessUrl("/shop")
@@ -45,7 +45,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
 				.exceptionHandling()
 				.and()
 				.csrf()
-				.disable();
+				.disable(); 
 
 	//http.headers().frameOptions().disable();
 	}

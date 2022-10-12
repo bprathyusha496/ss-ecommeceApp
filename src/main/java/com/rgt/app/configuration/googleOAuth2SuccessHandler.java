@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +36,7 @@ public class googleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Authentication authentication) throws IOException, ServletException {
-
+ 
 		OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
 
 		String email = token.getPrincipal().getAttributes().get("email").toString();
@@ -54,7 +53,7 @@ public class googleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 			roles.add(roleRepository.findById(2).get());
 			user.setRoles(roles);
 			userRepository.save(user);
-
+ 
 		}
 		redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/");
 

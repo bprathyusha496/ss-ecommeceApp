@@ -26,7 +26,7 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
 					<li class="nav-item active"><a class="navbar-brand"
-						th:href="@{/}" href="#">Home</a></li>
+					 th:href="@{/}" href="#">Home</a></li>
 					 <!-- <li class="nav-item active">
                     <a class="navbar-brand" th:href="@{/logout}" href="/logout">Logout</a>
                 </li> -->
@@ -45,29 +45,24 @@
                 <a class="pl-3" th:href="@{/logout}">Logout</a>
             </div>
         </li>
-				</ul>
-
-			</div>
+		</ul>
+		</div>
 		</div>
 	</nav><br>
 	<div class="border border-5">
 	<h2 align="center">Receipt</h2><br>
-<h5 align="center" style="color:orange"> EmailId :<span sec:authentication="name"></span></h5><br>
+   <h5 align="center" style="color:orange"> EmailId :<span sec:authentication="name"></span></h5><br>
 	<h5 align="center" style="color:#ff3333">Your Order Delivery date is : <span th:text="${DeliveryDate}"></span></h5>
-	
 	  <div class="container-sm" align="center">
       <table class="table">
         <thead class="thead-light">
         <tr>
             <th scope="col">SNo</th>
-            
             <th scope="col">ProductName</th>
             <th scope="col">Amount</th> 
-                   
         </tr>
         </thead>
         <tbody>
-
    <tr th:each="item, iStat : ${cart}">
             <th scope="row" th:text="${iStat.index + 1}">1</th>
             <td th:text="${item.name}">productName</td>

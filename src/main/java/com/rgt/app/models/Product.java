@@ -1,4 +1,4 @@
-package com.rgt.app.models;
+ package com.rgt.app.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,6 +47,10 @@ public class Product {
 		this.weight = weight;
 		this.description = description;
 		this.imageName = imageName;
+	}
+
+	public Product(int i) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -101,11 +105,7 @@ public class Product {
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", category=" + category + ", price=" + price + ", weight="
-				+ weight + ", description=" + description + ", imageName=" + imageName + ", user=" + user + "]";
-	}
+	
 
 	
 	

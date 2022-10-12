@@ -23,16 +23,10 @@ public class Category {
 	private Product product;
 	
 	public Category() {
-		super();
+		super(); 
 	}
 	
-	public Category(int id, String name, Product product) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.product = product;
-	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -54,10 +48,7 @@ public class Category {
 		this.product = product;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", product=" + product + "]";
-	}
+	
 
 	
 	

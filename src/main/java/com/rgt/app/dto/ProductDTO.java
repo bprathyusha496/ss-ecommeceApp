@@ -13,17 +13,7 @@ public class ProductDTO {
 	public ProductDTO() {
 		super();
 	}
-	public ProductDTO(int id, String name, int categoryId, double price, double weight, String description,
-			String imageName) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.categoryId = categoryId;
-		this.price = price;
-		this.weight = weight;
-		this.description = description;
-		this.imageName = imageName;
-	}
+	
 	public int getId() {
 		return id;
 	}
@@ -72,6 +62,7 @@ public class ProductDTO {
 		return "ProductDTO [id=" + id + ", name=" + name + ", categoryId=" + categoryId + ", price=" + price
 				+ ", weight=" + weight + ", description=" + description + ", imageName=" + imageName + "]";
 	}
+	
 	
 	
 

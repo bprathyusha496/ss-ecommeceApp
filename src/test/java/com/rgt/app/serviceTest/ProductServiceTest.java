@@ -7,20 +7,18 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rgt.app.models.Category;
 import com.rgt.app.models.Product;
 import com.rgt.app.repository.ProductReposiory;
 import com.rgt.app.service.ProductService;
-import static org.mockito.BDDMockito.given;
 
 //@RunWith(SpringRunner.class)
 @SpringBootTest 
@@ -40,8 +38,6 @@ public class ProductServiceTest {
 		Mockito.when(productReposiory.save(product)).thenReturn(product);
 		productService.addProduct(product);
 	}
-
-	
 
 	@Test
 	public void whenFindAllProductListtest() {

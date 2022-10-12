@@ -1,38 +1,59 @@
+package com.rgt.app.emailTest;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+
+import com.rgt.app.email.EmailSenderService;
+
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+public class EmailsenderserviceTest {
+
+	@Mock
+	private JavaMailSender mailSender;
+	@InjectMocks
+	private EmailSenderService emailSenderService;
+	@Mock
+	private SimpleMailMessage mailMessage;
+
+	@Test
+	public void sendEmailTest() {
+		String from ="asd";
+		String to="bn";
+		String text="sdfg";
+		String subject="sdfg";
+	
+		mailMessage.setFrom(from);
+		mailMessage.setTo(to);
+		mailMessage.setText(text);
+		mailMessage.setSubject(subject);
+	
+	mailSender.send(mailMessage);
+	emailSenderService.sendEmail(to, subject, subject);
+	Assert.assertEquals(subject, subject);
+	Assert.assertEquals(from, from);
+	Assert.assertEquals(to, to);
+	Assert.assertEquals(text, text);
+ 
+
+
+	
+
+	}
+
+}
 /*
- * package com.rgt.app.emailTest;
- * 
- * import static org.junit.Assert.assertEquals; import static
- * org.junit.Assert.assertTrue;
- * 
- * import java.io.IOException;
- * 
- * import javax.mail.MessagingException; import javax.mail.internet.MimeMessage;
- * import org.junit.jupiter.api.Test; import org.mockito.InjectMocks; import
- * org.springframework.boot.test.context.SpringBootTest;
- * 
- * import com.rgt.app.email.Email; import com.rgt.app.email.EmailSenderService;
- * 
- * @SpringBootTest public class EmailSenderServiceTest {
- * 
- * @InjectMocks private EmailSenderService emailSenderService;
- * 
- * @Test public void shouldSendSingleMail() throws MessagingException,
- * IOException {
- * 
- * emailSenderService.sendEmail(null, null, null);
- * 
- * 
- * MimeMessage[] receivedMessages = smtpServerRule.getMessages();
- * assertEquals(1, receivedMessages.length);
- * 
- * MimeMessage current = receivedMessages[0];
- * 
- * assertEquals(mail.getSubject(), current.getSubject());
- * assertEquals(mail.getTo(), current.getAllRecipients()[0].toString());
- * assertTrue(String.valueOf(current.getContent()).contains(mail.getContent()));
- * 
- * 
- * }
- * 
- * }
+ * User user = new User(); user.setEmail("asd@gmail.com"); Optional<User> opt =
+ * Optional.of(user);
+ * when(userRepository.findUserByEmail(anyString())).thenReturn(opt);
+ * customUserDetailService.loadUserByUsername(anyString()); //
+ * when(user.getEmail().isEmpty()).thenThrow(UsernameNotFoundException.class);
+ * assertEquals("asd@gmail.com",user.getEmail());
  */

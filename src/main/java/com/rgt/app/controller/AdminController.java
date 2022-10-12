@@ -1,6 +1,5 @@
 package com.rgt.app.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,28 +9,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.rgt.app.dto.ProductDTO;
-import com.rgt.app.excel.ExcelFileGenerator;
-
 import com.rgt.app.models.Category;
 import com.rgt.app.models.Product;
 import com.rgt.app.models.Receipt;
-import com.rgt.app.models.User;
-import com.rgt.app.repository.ProductReposiory;
 import com.rgt.app.repository.ReceiptRepositoy;
 import com.rgt.app.repository.UserRepository;
 import com.rgt.app.service.CategoryService;
@@ -39,41 +29,35 @@ import com.rgt.app.service.ProductService;
 
 @Controller
 public class AdminController {
-
+ 
 	private static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/productImages";
-
+  
 	@Autowired
 	private CategoryService categoryService;
 	@Autowired
 	private ProductService productService;
 
 	@Autowired
-	private ProductReposiory productReposiory;
-	@Autowired
 	ReceiptRepositoy receiptRepositoy;
 
 	@Autowired
 	UserRepository userRepository;
-
-
+	
 	@GetMapping("/admin")
 	public String adminHome() { 
 		return "adminHome";
-
 	}
-
 	@GetMapping("/admin/categories")
 	public String getCategories(Model model) {
 		List<Category> ss = categoryService.getallCategory();
 		model.addAttribute("categories", ss);
 		return "categories";
-
 	}
-
 	@GetMapping("/admin/categories/add")
-	public String getCategoriesAdd(Model model) {
+	public String getCategoriesAdd(Model model) { 
 		model.addAttribute("category", new Category());
 		return "categoriesAdd";
+		
 	}
 
 	@PostMapping("/admin/categories/add")
@@ -86,9 +70,9 @@ public class AdminController {
 	public String deleteCat(@PathVariable int id) {
 		categoryService.removeCategoryById(id);
 		return "redirect:/admin/categories";
-	}
+	} 
 
-	@GetMapping("/admin/categories/update/{id}")
+	@GetMapping("/admin/categories/update/{id}") 
 	public String updateCat(@PathVariable int id, Model model) {
 
 		Optional<Category> category = categoryService.getCategoryById(id);
@@ -100,7 +84,7 @@ public class AdminController {
 		}
 	}
 	// products section
-	// product save
+	// product save 
 
 	@GetMapping("/admin/products")
 	public String productsinfo(Model model) {
@@ -118,8 +102,7 @@ public class AdminController {
 
 	@PostMapping("/admin/products/add")
 	public String productAddPost(@ModelAttribute("productDTO") ProductDTO productDTO,
-			@RequestParam("productImage") MultipartFile file, @RequestParam("imgName") String imgName)
-			throws IOException {
+	@RequestParam("productImage") MultipartFile file, @RequestParam("imgName") String imgName) throws IOException {
 		Product product = new Product();
 		product.setId(productDTO.getId());
 		product.setName(productDTO.getName());
@@ -130,7 +113,7 @@ public class AdminController {
 
 		String imageUUID;
 
-		if (!file.isEmpty()) {
+		if (!file.isEmpty()) { 
 			imageUUID = file.getOriginalFilename();
 			Path fileNameAndpath = Paths.get(uploadDir, imageUUID);
 			Files.write(fileNameAndpath, file.getBytes());
@@ -146,7 +129,7 @@ public class AdminController {
 	@GetMapping("/admin/product/delete/{id}")
 	public String deleteProduct(@PathVariable int id) {
 		productService.removeProductById(id);
-		return "redirect:/admin/products";
+		return "redirect:/admin/products"; 
 
 	}
 
@@ -180,7 +163,7 @@ public class AdminController {
 
 		List<Receipt> all = receiptRepositoy.findAll();
 		model.addAttribute("receipt", all);
-		return "getallOrderbyuser";
+		return "getallOrderbyuser"; 
 
 	}
 

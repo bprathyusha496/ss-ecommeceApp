@@ -54,7 +54,10 @@ public User() {
 	
 }
 	
-	  public int getId() { 
+	  public User(int i) {
+	// TODO Auto-generated constructor stub
+}
+	public int getId() { 
 		  return id;
 	  }
 	  
@@ -98,11 +101,7 @@ public User() {
 	public void setProduct(List<Product> product) {
 		this.product = product;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", roles=" + roles + ", product=" + product + "]";
-	}
+	
 	  
 	  
 	  

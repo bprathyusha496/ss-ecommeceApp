@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.rgt.app.email.EmailSenderService;
 import com.rgt.app.models.Address;
-import com.rgt.app.models.Category;
 import com.rgt.app.repository.AddressRepository;
 import com.rgt.app.service.AddressService;
 
@@ -29,7 +28,7 @@ public class AddressServiceTest {
 	public void saveAddressTest() {  
 		Address address=new Address();
 		address.setFirstName("sdds");
-		address.setEmail("bprathyu@gmail.com");
+		address.setEmail("bprathyu@gmail.com"); 
 		Mockito.when(addressRepository.save(address)).thenReturn(address);
 		addressService.saveaddress(address); 
 	}

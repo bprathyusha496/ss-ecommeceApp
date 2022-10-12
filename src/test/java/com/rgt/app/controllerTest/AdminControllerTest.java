@@ -1,57 +1,41 @@
-
 package com.rgt.app.controllerTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-
-import org.junit.Before;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.web.servlet.oauth2.client.OAuth2ClientSecurityMarker;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import com.rgt.app.configuration.CustomUserDetail;
+import org.springframework.ui.Model;
+import com.rgt.app.configuration.SecurityConfigure;
 import com.rgt.app.controller.AdminController;
 import com.rgt.app.models.Category;
 import com.rgt.app.models.Product;
-import com.rgt.app.models.User;
+import com.rgt.app.models.Receipt;
 import com.rgt.app.repository.ProductReposiory;
 import com.rgt.app.repository.ReceiptRepositoy;
 import com.rgt.app.repository.UserRepository;
 import com.rgt.app.service.CategoryService;
 import com.rgt.app.service.ProductService;
 
-
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
 @SpringBootTest
-//@WebMvcTest(AdminController.class)
-public class AdminControllerTest {   
-
+@Import({ SecurityConfigure.class })
+public class AdminControllerTest {
+	
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -67,30 +51,182 @@ public class AdminControllerTest {
 	@MockBean
 	ReceiptRepositoy receiptRepositoy;
 
-	@InjectMocks
-	AdminController adminController;
+	@Autowired
+	private AdminController adminController;
 
 	@MockBean
-	UserRepository userRepository; 
+	UserRepository userRepository;
+	
+	private Model model;
+
 	Category category = new Category();
 
 	Product p1 = new Product(1, "pens", category, 50, 200, "dxcfgvbh", "cello");
 	Product p2 = new Product(2, "pets", category, 100, 400, "dxcfgvbh", "dogs");
 	Product p3 = new Product(3, "pins", category, 220, 10, "dxcfgvbh", "fancystore");
 
-	
-	
 	@Test
 	public void contextLoads() throws Exception {
 		assertThat(adminController).isNotNull();
+	} 
+
+	
+	  @Test 
+	  public void AdminHomeTest() throws Exception {
+	  this.mockMvc.perform(get("/admin")); }
+	 
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void getCategoriesTest() throws Exception {
+		List<Category> cc = new ArrayList<>();
+		given(categoryService.getallCategory()).willReturn(cc);
+		this.mockMvc.perform(get("/admin/categories").contentType(MediaType.ALL));
 	}
 
 	@Test
-//	@OAuth2ClientSecurityMarker
-	public void AdminTest() throws Exception {
-		this.mockMvc.perform(get("/admin"));
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void getCategoriesAddTest() throws Exception {
+		Category category=new Category();
+
+			 
+		}
+		
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void postcatAddTest() throws Exception {
+		// post the cateogories
+		Category category = new Category();
+		given(categoryService.addCategory(category)).willReturn(category);
+		mockMvc.perform(
+		post("/admin/categories/add").param("id", "1").param("name", "dfgh").contentType(MediaType.ALL));
+
 	}
 
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void deleteCatTest() throws Exception {
+		Optional<Category> category = Optional.of(new Category());
+		Category category1 = new Category();
+		given(categoryService.getCategoryById(1)).willReturn(category);
+
+		this.mockMvc.perform(get("/admin/categories/delete/{id}", category1.getId()));
+	}
+ 
+	/*
+	 * @Test
+	 * 
+	 * @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"}) public void
+	 * updateCatTest() throws Exception {
+	 * 
+	 * Optional<Category> category =Optional.of(new Category());; Category
+	 * category1=new Category();
+	 * given(categoryService.getCategoryById(1)).willReturn(category);
+	 * 
+	 * this.mockMvc.perform(get("/admin/categories/update/{id}",category1.getId()).
+	 * contentType(MediaType.ALL)); //// Optional<Category> category20
+	 * =Optional.of(new Category());
+	 * 
+	 * Category ob=new Category();
+	 * Mockito.when(categoryService.getCategoryById(1)).thenReturn(category20);
+	 * System.out.println(categoryService.getCategoryById(1));
+	 * System.out.println(ob.getId());
+	 * mockMvc.perform(get("/admin/categories/update/{category20.id}", ob.getId()));
+	 * // .andExpect(status().isOk()); }
+	 */
+
+	/*
+	 * mockMvc.perform(post("/admin/product/update/{id}",category.getId()).
+	 * contentType(MediaType.ALL) .param("id", "1") .param("name","dfgh")
+	 * .contentType(MediaType.ALL));
+	 */
+
+	// Product section
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void productinfoTest() throws Exception {
+		// getallproducts
+
+		List<Product> pp = new ArrayList<>();
+		given(productService.getallProducts()).willReturn(pp);
+		this.mockMvc.perform(get("/admin/products").contentType(MediaType.ALL));
+		// .andExpect(status)
+	}
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void ProductAddGetTest() throws Exception {
+		Product product = new Product();
+		product.setId(1);
+		product.setName("gfds");
+		product.setPrice(125);
+		product.setWeight(1452);
+
+		List<Category> cc = new ArrayList<>();
+		given(categoryService.getallCategory()).willReturn(cc);
+		mockMvc.perform(get("/admin/products/add").contentType(MediaType.ALL));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void ProductAddPostTest() throws Exception {
+		Product pp = new Product();
+
+		given(productReposiory.save(pp)).willReturn(pp);
+
+		mockMvc.perform(post("/admin/products/add").param("id", "1").param("name", "ghnj").param("ImageName", "hbgvfc")
+
+				.contentType(MediaType.MULTIPART_FORM_DATA));
+
+	}
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void deleteProductTest() throws Exception {
+		Optional<Product> products = Optional.of(new Product());
+		
+		Product product = new Product();
+		given(productService.getProductById(1)).willReturn(products);
+
+		this.mockMvc.perform(get("/admin/product/delete/{id}", product.getId()));
+
+	}
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void uploadProductGetTest() throws Exception {
+		Optional<Product> product = Optional.of(new Product());
+		Product product2 = new Product();
+		Optional<Category> cat = Optional.of(new Category());
+		Category category = new Category();
+
+		// given(productService.getProductById(1)).willReturn(product);
+		// given(categoryService.getCategoryById(1)).willReturn(cat);
+		mockMvc.perform(get("/admin/product/update/{id}", product.get()).param("id", "1").param("name", "dfgh")
+
+				.contentType(MediaType.ALL));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void getallOrdersTest() throws Exception {
+		// getalluserOrders
+		List<Receipt> receipts = new ArrayList<>();
+		given(receiptRepositoy.findAll()).willReturn(receipts);
+		this.mockMvc.perform(get("/getalluserOrders").contentType(MediaType.ALL));
+	}
+
+	/*
+	 * @SuppressWarnings("deprecation") public void savecategoryTest() throws
+	 * Exception { Category category=new Category();
+	 * given(categoryService.addCategory(category)).willReturn(category);
+	 * this.mockMvc.perform((RequestBuilder) ((ResultActions) post("/admin/add")
+	 * .param("id", "1").param("name", "sdfg") .contentType(MediaType.ALL))
+	 * .andExpect(status().isOk()));
+	 * 
+	 * }
+	 */
 	/*
 	 * @SuppressWarnings("deprecation")
 	 * 
@@ -113,54 +249,6 @@ public class AdminControllerTest {
 	 * ((MockHttpServletRequestBuilder)
 	 * mockMvc.perform(get("/admin/products")).andExpect(status().isOk()))
 	 * .contentType(MediaType.APPLICATION_JSON_UTF8); }
-	 */ 
-private List<Category> cc = new ArrayList<>();
-	@Test
-	@OAuth2ClientSecurityMarker
-	public void getCategoriesTest() throws Exception {  
-		List<Category> cc = new ArrayList<>();
-		given(categoryService.getallCategory()).willReturn(cc);
-		this.mockMvc.perform(get("/admin/categories"));
-		//.andExpect(status)
-	}
-
-	@Test
-	public void gettingAllProductswithCategoryTest() throws Exception {
-		List<Category> cc = new ArrayList<>();
-		given(categoryService.getallCategory()).willReturn(cc);
-		mockMvc.perform(get("/admin/products/add").contentType(MediaType.ALL));
-	}
-
-	@Test
-	public void saveproductsTest() throws Exception {
-		Product pp = new Product();
-		Category ca = new Category();
-		given(productReposiory.save(pp)).willReturn(pp);
-		given(categoryService.addCategory(ca)).willReturn(ca);
-		mockMvc.perform(get("/admin/products/add").param("id", "1").param("name", "ghnj").param("category", "books")
-				.contentType(MediaType.ALL));
-
-	}
-
-	
-
-	@SuppressWarnings("deprecation")
-	public void savecategoryTest() throws Exception {
-		Category category=new Category();
-		given(categoryService.addCategory(category)).willReturn(category);
-		this.mockMvc.perform((RequestBuilder) ((ResultActions) post("/admin/add")
-			.param("id", "1").param("name", "sdfg")
-		.contentType(MediaType.ALL))  
-	    .andExpect(status().isOk()));
-
-	}  
-
-	/*
-	 * @Test public void getCategoriesAddTest() throws Exception { Category ca = new
-	 * Category();
-	 * 
-	 * given(ca).willReturn(ca);
-	 * mockMvc.perform(get("/admin/categories").param("id",
-	 * "1").contentType(MediaType.ALL)); }
 	 */
+
 }

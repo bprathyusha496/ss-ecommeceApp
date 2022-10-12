@@ -1,11 +1,9 @@
 package com.rgt.app.controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,35 +16,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.rgt.app.email.EmailSenderService;
 import com.rgt.app.global.GlobalData;
-import com.rgt.app.models.Product;
-import com.rgt.app.models.Receipt;
 import com.rgt.app.models.Role;
 import com.rgt.app.models.User;
-import com.rgt.app.repository.ProductReposiory;
-import com.rgt.app.repository.ReceiptRepositoy;
 import com.rgt.app.repository.RoleRepository;
 import com.rgt.app.repository.UserRepository;
-import com.rgt.app.service.ProductService;
+
 
 @Controller
-public class loginController {
-	
+public class loginController {    
+	 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private RoleRepository roleRepository;
-	@Autowired
-	private EmailSenderService emailSenderService;
-	@Autowired
-	private ProductReposiory productReposiory;
-	@Autowired
-	private ReceiptRepositoy receiptRepositoy;
-	@Autowired
-	private ProductService productService;
+	
 	
 	@GetMapping("/login")
 	public String login(Principal principal) {
@@ -62,20 +48,16 @@ public class loginController {
 		 * 
 		 * }
 		 */
-		return "login";
+		return "login"; 
 		
 	}	
-	/*
-	 * @GetMapping("/logout") 
-	 * public String logout(){ 
-	 * return "index"; 
-	 * }
-	 */
+	
 	
 	  @GetMapping("/register") 
 	  public String registerGet() { 
 		  return "register"; 
-		  }
+		  } 
+	  
 	@PostMapping("/register") 
 	public String registerPost(Model model,@ModelAttribute("user") User user,HttpServletRequest request,BindingResult result)throws ServletException {
 				
@@ -84,13 +66,13 @@ public class loginController {
 			 
 			result.rejectValue("email","There is already an account registered with the same");
 		  
-		if(result.hasErrors()){
-            model.addAttribute("user", user);
-            return "/register";
+		if(result.hasErrors()){ 
+            model.addAttribute("user", user); 
+            return "/register"; 
         }
-		}else {
+		}else { 
 			
-			  if(existingUser != null && existingUser.getEmail() != null &&
+			  if(existingUser != null && existingUser.getEmail() != null && 
 			  !existingUser.getEmail().isEmpty()){ result.rejectValue("email", null,
 			  "There is already an account registered with the same email"); }
 			 
@@ -102,8 +84,7 @@ public class loginController {
 		userRepository.save(user);
 		//request.login(user.getEmail(),password);
 	}
-		return "redirect:/login";
+		return "redirect:/login";  
 	}
-	
 }
 
