@@ -77,11 +77,11 @@
 
 					<td><a href=""
 						th:href="@{/admin/product/update/{id}(id=${product.id})}"class="btn btn-primary "
-						onclick="if (!(confirm('Are you sure you want to Update this Product Details?'))) return false">Update</a>
+						onclick="if (!(confirm('Are you sure you want to Update this Product Details?'))) ">Update</a>
 					</td>
 				<td>	<a href=""
 						th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="btn btn-danger "
-						onclick="if (!(confirm('Are you sure you want to Delete this Product Details?'))) return false">Delete</a></td>
+						onclick="if (!(confirm('Are you sure you want to Delete this Product Details?'))) ">Delete</a></td>
         </tr>
         </tbody>
         </table>

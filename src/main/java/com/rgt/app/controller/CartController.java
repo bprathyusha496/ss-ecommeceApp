@@ -59,7 +59,7 @@ public class CartController {
 	 * = GlobalData.cart.stream().mapToDouble(Product::getPrice).sum();
 	 * System.out.println(total); model.addAttribute("cart", GlobalData.cart);
 	 * return "cart"; }
-	 */ 
+	 */
 	@GetMapping("/cart")
 	public String cartGet(Model model, Principal principal) {
 		
@@ -76,9 +76,9 @@ public class CartController {
 					model.addAttribute("total", GlobalData.cart.stream().mapToDouble(Product::getPrice).sum());
 					Double total = GlobalData.cart.stream().mapToDouble(Product::getPrice).sum();
 					System.out.println(total);
-					model.addAttribute("cartCount", GlobalData.cart.size());
+					model.addAttribute("cartCount", GlobalData.cart.size()); 
 				}
-			} 
+			}
 		}
 		/*
 		 * for (Receipt re : receipt) { for (Product p : pr) { if
@@ -105,10 +105,8 @@ public class CartController {
 			GlobalData.cart.add(productService.getProductById(p.getId()).get());
 					
 				}
- 
 			}
 			}
-		
 
 		return "Orders";
 	}
@@ -134,7 +132,7 @@ public class CartController {
 	@GetMapping("/cart/removeItem/{index}")
 	public String cartItemRemove(@PathVariable int index) {
 		GlobalData.cart.remove(index);
-		return "redirect:/cart";
+		return "redirect:/cart"; 
 	}
 
 	/*
@@ -159,7 +157,7 @@ public class CartController {
 		LocalDateTime now = LocalDateTime.now();
 		System.out.println(now);
 		List<Receipt> receipt = receiptRepositoy.findAll();
-		for (Receipt u : receipt) {
+		for (Receipt u : receipt) { 
 			if (u.getUser() == (objj.getId()) && u.getProductId() == id && u.getConfirm().equals("pending")) {
 				u.setName(pd.getName());
 				u.setImageName(pd.getImageName());
@@ -174,12 +172,10 @@ public class CartController {
 				int i = 0;
 				u.setStatusId(i);
 
-				receiptRepositoy.save(u);
+				receiptRepositoy.save(u); 
 				break;
-
 			}
-		}
-
+		} 
 		return "redirect:/cart";
 	}
 
@@ -192,7 +188,7 @@ public class CartController {
 		List<Receipt> receipt = receiptRepositoy.findAll();
 		for (Receipt u : receipt) {
 
-			if (u.getUser() == ((objj.getId())) && u.getConfirm().equals("pending")) {
+			if (u.getUser() == ((objj.getId())) && u.getConfirm().equals("pending")) { 
 
 				i = 10;
 
@@ -215,9 +211,9 @@ public class CartController {
 		model.addAttribute("cartCount", GlobalData.cart.size());
 		model.addAttribute("cart", GlobalData.cart);
 		Receipt r = new Receipt();
-		r.setDeliveredDate(r.getOrderDate().plusDays(5));
-		model.addAttribute("check");
-
+		r.setDeliveredDate(r.getOrderDate().plusDays(5));             //for testing comment this 
+		model.addAttribute("check"); 
+  
 		return "checkout"; 
 	}
 
@@ -237,7 +233,7 @@ public class CartController {
 
 		addressService.saveaddress(address);  
 
-		return "success";
+		return "success"; 
 
 	}
 

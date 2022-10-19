@@ -1,14 +1,28 @@
 package com.rgt.app.controllerTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.mail.Multipart;
+
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
@@ -19,11 +33,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.rgt.app.configuration.SecurityConfigure;
 import com.rgt.app.controller.AdminController;
+import com.rgt.app.dto.ProductDTO;
 import com.rgt.app.models.Category;
 import com.rgt.app.models.Product;
 import com.rgt.app.models.Receipt;
+import com.rgt.app.models.User;
 import com.rgt.app.repository.ProductReposiory;
 import com.rgt.app.repository.ReceiptRepositoy;
 import com.rgt.app.repository.UserRepository;
@@ -39,31 +57,36 @@ public class AdminControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockBean
+	@Mock
 	private CategoryService categoryService;
 
-	@MockBean
+	@Mock
 	private ProductService productService;
 
-	@MockBean
+	@Mock
 	private ProductReposiory productReposiory;
 
-	@MockBean
+	@Mock
 	ReceiptRepositoy receiptRepositoy;
 
-	@Autowired
+	@InjectMocks
 	private AdminController adminController;
 
-	@MockBean
-	UserRepository userRepository;
-	
+	@Mock
+	private UserRepository userRepository;
+	@Mock
+	private MultipartFile multipart;
+	@Mock
 	private Model model;
-
-	Category category = new Category();
-
-	Product p1 = new Product(1, "pens", category, 50, 200, "dxcfgvbh", "cello");
-	Product p2 = new Product(2, "pets", category, 100, 400, "dxcfgvbh", "dogs");
-	Product p3 = new Product(3, "pins", category, 220, 10, "dxcfgvbh", "fancystore");
+	
+	/*
+	 * Category category = new Category();
+	 * 
+	 * Product p1 = new Product(1, "pens", category, 50, 200, "dxcfgvbh", "cello");
+	 * Product p2 = new Product(2, "pets", category, 100, 400, "dxcfgvbh", "dogs");
+	 * Product p3 = new Product(3, "pins", category, 220, 10, "dxcfgvbh",
+	 * "fancystore");
+	 */
 
 	@Test
 	public void contextLoads() throws Exception {
@@ -86,8 +109,9 @@ public class AdminControllerTest {
 
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
-	public void getCategoriesAddTest() throws Exception {
-		Category category=new Category();
+	public void getCategoriesAddTest() throws Exception{
+	//	adminController.getCategoriesAdd(model);
+		mockMvc.perform(get("/admin/categories/add").contentType(MediaType.ALL));
 
 			 
 		}
@@ -105,53 +129,56 @@ public class AdminControllerTest {
 
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
-	public void deleteCatTest() throws Exception {
-		Optional<Category> category = Optional.of(new Category());
-		Category category1 = new Category();
-		given(categoryService.getCategoryById(1)).willReturn(category);
-
-		this.mockMvc.perform(get("/admin/categories/delete/{id}", category1.getId()));
+	public void deleteCatTest() {
+		
+		Category category = new Category();
+		given(categoryService.getCategoryById(1)).willReturn(Optional.of(category));
+		adminController.deleteCat(1);
 	}
  
-	/*
-	 * @Test
-	 * 
-	 * @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"}) public void
-	 * updateCatTest() throws Exception {
-	 * 
-	 * Optional<Category> category =Optional.of(new Category());; Category
-	 * category1=new Category();
-	 * given(categoryService.getCategoryById(1)).willReturn(category);
-	 * 
-	 * this.mockMvc.perform(get("/admin/categories/update/{id}",category1.getId()).
-	 * contentType(MediaType.ALL)); //// Optional<Category> category20
-	 * =Optional.of(new Category());
-	 * 
-	 * Category ob=new Category();
-	 * Mockito.when(categoryService.getCategoryById(1)).thenReturn(category20);
-	 * System.out.println(categoryService.getCategoryById(1));
-	 * System.out.println(ob.getId());
-	 * mockMvc.perform(get("/admin/categories/update/{category20.id}", ob.getId()));
-	 * // .andExpect(status().isOk()); }
-	 */
-
-	/*
-	 * mockMvc.perform(post("/admin/product/update/{id}",category.getId()).
-	 * contentType(MediaType.ALL) .param("id", "1") .param("name","dfgh")
-	 * .contentType(MediaType.ALL));
-	 */
-
+	@SuppressWarnings("static-access")
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void updateCatTest() throws Exception {//if success case
+		Category category =new Category();
+		category.setId(1);
+		Optional<Category> category2=Optional.of(category);
+		category2.equals(category.getId());
+		Mockito.when(categoryService.getCategoryById(1)).thenReturn(Optional.of(category));
+	   Assert.assertEquals(true,category2.isPresent());
+	
+	   given(categoryService.getCategoryById(1)).willReturn(category2);
+	
+	    adminController.updateCat(1, model);
+	}
+	
+	@SuppressWarnings("static-access")
+	@Test
+	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
+	public void updateCatTest1() throws Exception {
+		//else part
+	adminController.updateCat(1, model); 
+	}
 	// Product section
 
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
 	public void productinfoTest() throws Exception {
 		// getallproducts
-
+		Product product=new Product(); 
+		product.setId(1);
+		Category category=new Category();
+		category.setName("dfgh");		
+		product.setCategory(category); 
+		User user=new User();
+		user.setId(1);
 		List<Product> pp = new ArrayList<>();
-		given(productService.getallProducts()).willReturn(pp);
-		this.mockMvc.perform(get("/admin/products").contentType(MediaType.ALL));
-		// .andExpect(status)
+		product.setCategory(category);
+		product.setId(1);
+	
+		Mockito.when(productService.getallProducts()).thenReturn(pp);
+		//mockMvc.perform(get("/admin/products").contentType(MediaType.ALL));
+		adminController.productsinfo(model);
 	}
 
 	@Test
@@ -171,41 +198,50 @@ public class AdminControllerTest {
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
 	public void ProductAddPostTest() throws Exception {
+		ProductDTO dto=new ProductDTO();
+		dto.setId(1);
+		dto.setCategoryId(1);
+		dto.setImageName("dfg");
+		dto.setName("sdf");
+		Category category=new Category();
+		category.setId(1);
+		List<Product>products=new ArrayList<>();
 		Product pp = new Product();
-
-		given(productReposiory.save(pp)).willReturn(pp);
-
-		mockMvc.perform(post("/admin/products/add").param("id", "1").param("name", "ghnj").param("ImageName", "hbgvfc")
-
-				.contentType(MediaType.MULTIPART_FORM_DATA));
+		pp.setId(dto.getId());
+		pp.setName(dto.getName());
+		pp.setImageName(dto.getImageName());
+		pp.setCategory(category);
+	    products.add(pp);
+		Mockito.when(categoryService.getCategoryById(1)).thenReturn(Optional.of(category));
+		 doNothing().when(productService).addProduct(pp);
+		adminController.productAddPost(dto, multipart, "mmm");
+      
 
 	}
 
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
 	public void deleteProductTest() throws Exception {
-		Optional<Product> products = Optional.of(new Product());
-		
-		Product product = new Product();
-		given(productService.getProductById(1)).willReturn(products);
 
-		this.mockMvc.perform(get("/admin/product/delete/{id}", product.getId()));
-
-	}
+	doNothing().when(productService).removeProductById(Mockito.anyInt());
+	adminController.deleteProduct(1);
+	} 
 
 	@Test
 	@WithMockUser(username = "admin", authorities = { "ROLE_ADMIN" })
 	public void uploadProductGetTest() throws Exception {
-		Optional<Product> product = Optional.of(new Product());
-		Product product2 = new Product();
+		User user =new User();
+		Product product = new Product();
 		Optional<Category> cat = Optional.of(new Category());
 		Category category = new Category();
+		product.setId(1);
+		product.setCategory(category);
+		product.setName("fcgvb");
+		product.setPrice(10);
+		product.setUser(user);
+        Mockito.when(productService.getProductById(1)).thenReturn(Optional.of(product));
 
-		// given(productService.getProductById(1)).willReturn(product);
-		// given(categoryService.getCategoryById(1)).willReturn(cat);
-		mockMvc.perform(get("/admin/product/update/{id}", product.get()).param("id", "1").param("name", "dfgh")
-
-				.contentType(MediaType.ALL));
+	 	adminController.uploadProductGet(1, model);
 	}
 
 	@Test

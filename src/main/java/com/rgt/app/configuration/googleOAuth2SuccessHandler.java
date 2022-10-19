@@ -56,6 +56,6 @@ public class googleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
  
 		}
 		redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/");
-
+ 
 	}
 }

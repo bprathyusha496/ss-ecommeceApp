@@ -61,7 +61,7 @@ public class ProductServiceTest {
 		 * productService.getProductById(2); assertThat(product9).isNotNull();
 		 */
 	}
-
+ 
 	@Test
 	public void whenFindAllbycategorybyid() {
 		productService.getAllProductsByCategoryById(1);

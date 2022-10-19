@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.rgt.app.models.Product;
 
+import lombok.Builder;
+
+
 public class GlobalData {
 	
 
@@ -14,6 +17,4 @@ public class GlobalData {
 		  cart=new ArrayList<Product>();
 		  
 		  }
-	 
-	
 }

@@ -10,6 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 public class Category {
 	@Id
@@ -21,35 +25,6 @@ public class Category {
 	@ManyToOne(fetch =FetchType.LAZY)
 	@JoinColumn(name = "id",referencedColumnName = "id")
 	private Product product;
-	
-	public Category() {
-		super(); 
-	}
-	
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	
-
 	
 	
 

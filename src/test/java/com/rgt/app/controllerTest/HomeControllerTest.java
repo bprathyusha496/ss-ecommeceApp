@@ -103,15 +103,15 @@ public class HomeControllerTest {
 	public void viewProductTest() throws Exception {
 		Category category=new Category();
 		category.setName("as");
-		Optional<Product> products = Optional.of(new Product());
 		Product product = new Product();
 		product.setId(1);
-		product.getCategory();
+		product.setCategory(category);
  
-		Mockito.when(productService.getProductById(1)).thenReturn(products);
-		 mockMvc.perform(get("/shop/viewproduct/{id}",1).contentType(MediaType.ALL));
+		Mockito.when(productService.getProductById(1)).thenReturn(Optional.of(product));
+		mockMvc.perform(get("/shop/viewproduct/{id}",1));
+		  
 	}  
- 
+  
 }
   
 

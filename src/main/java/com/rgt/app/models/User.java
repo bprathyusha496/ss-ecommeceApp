@@ -19,6 +19,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@Setter
+@Getter
+@NoArgsConstructor
+
 @Entity
 @Table(name = "User")
 public class User {
@@ -50,66 +58,9 @@ public class User {
 		this.roles = user.getRoles();
 		
 	}
-public User() {
-	
-}
-	
-	  public User(int i) {
-	// TODO Auto-generated constructor stub
-}
-	public int getId() { 
-		  return id;
-	  }
-	  
-	  
-	  public void setId(int id) { this.id = id; }
-	  
-	  
-	  public String getFirstName() { return firstName; }
-	  
-	  
-	  public void setFirstName(String firstName) { this.firstName = firstName; }
-	  
-	  
-	  public String getLastName() { return lastName; }
-	  
-	  
-	  public void setLastName(String lastName) { this.lastName = lastName; }
-	  
-	  
-	  public String getEmail() { return email; }
-	  
-	  
-	  public void setEmail(String email) { this.email = email; }
-	  
-	  
-	  public String getPassword() { return password; }
-	  
-	  
-	  public void setPassword(String password) { this.password = password; }
-	 
-	  public List<Role> getRoles() { return roles; }
-	
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-	
-	
-	public List<Product> getProduct() {
-		return product;
-	}
-	public void setProduct(List<Product> product) {
-		this.product = product;
-	}
-	
-	  
-	  
-	  
-	 
 
+	public User(int i) {
+		// TODO Auto-generated constructor stub
+	}
 	
-	
-	
-	
-
 }

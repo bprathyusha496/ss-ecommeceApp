@@ -2,13 +2,11 @@ package com.rgt.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.rgt.app.email.EmailSenderService;
 import com.rgt.app.models.Address;
 import com.rgt.app.repository.AddressRepository;
-import com.rgt.app.repository.UserRepository;
 
 @Service 
 public class AddressService {
@@ -16,8 +14,8 @@ public class AddressService {
 	private AddressRepository addressRepository;
 	
 	
-	@Autowired 
-	private UserRepository userRepository;
+	//@Autowired 
+//	private UserRepository userRepository;
 	@Autowired
 	private EmailSenderService emailSenderService;
 	

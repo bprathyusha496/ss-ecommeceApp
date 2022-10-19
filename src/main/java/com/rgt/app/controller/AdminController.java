@@ -81,11 +81,11 @@ public class AdminController {
 			return "categoriesAdd";
 		} else {
 			return "exception 404";
-		}
+		} 
 	}
 	// products section
 	// product save 
-
+	
 	@GetMapping("/admin/products")
 	public String productsinfo(Model model) {
 		List<Product> p = productService.getallProducts();
@@ -106,7 +106,7 @@ public class AdminController {
 		Product product = new Product();
 		product.setId(productDTO.getId());
 		product.setName(productDTO.getName());
-		product.setCategory(categoryService.getCategoryById(productDTO.getCategoryId()).get());
+	//	product.setCategory(categoryService.getCategoryById(productDTO.getCategoryId()).get());  //copmment for testing
 		product.setPrice(productDTO.getPrice());
 		product.setWeight(productDTO.getWeight());
 		product.setDescription(productDTO.getDescription());
@@ -129,10 +129,9 @@ public class AdminController {
 	@GetMapping("/admin/product/delete/{id}")
 	public String deleteProduct(@PathVariable int id) {
 		productService.removeProductById(id);
-		return "redirect:/admin/products"; 
+		return "redirect:/admin/products";  
 
 	}
-
 	// product update
 	@GetMapping("/admin/product/update/{id}")
 	public String uploadProductGet(@PathVariable int id, Model model) {
@@ -147,7 +146,7 @@ public class AdminController {
 		productDTO.setImageName(product.getImageName());
 
 		model.addAttribute("categories", categoryService.getallCategory());
-		model.addAttribute("productDTO", productDTO);
+		model.addAttribute("productDTO", productDTO); 
 		return "productsAdd";
 
 	}

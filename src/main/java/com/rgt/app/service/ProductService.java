@@ -33,5 +33,4 @@ public class ProductService {
 		return productReposiory.findAllByCategory_Id(id);
 		 
 	}
-
 }

@@ -1,17 +1,15 @@
 /*
  * package com.rgt.app.config;
  * 
- * import static org.mockito.Mockito.when;
- * 
- * import java.util.ArrayList; import java.util.List; import java.util.Optional;
- * 
- * import org.junit.jupiter.api.Test; import
- * org.junit.jupiter.api.extension.ExtendWith; import org.mockito.InjectMocks;
- * import org.mockito.Mock; import org.mockito.Mockito; import
- * org.mockito.junit.jupiter.MockitoExtension; import
+ * import static org.mockito.Mockito.when; import static
+ * org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+ * import java.util.Optional; import org.junit.jupiter.api.Test; import
+ * org.junit.jupiter.api.extension.ExtendWith; import org.mockito.Mock; import
+ * org.mockito.Mockito; import org.mockito.junit.jupiter.MockitoExtension;
+ * import org.springframework.beans.factory.annotation.Autowired; import
  * org.springframework.boot.test.context.SpringBootTest; import
  * org.springframework.boot.test.mock.mockito.MockBean; import
- * org.springframework.context.support.BeanDefinitionDsl.Role; import
+ * org.springframework.http.MediaType; import
  * org.springframework.security.oauth2.core.OAuth2AccessToken; import
  * org.springframework.security.web.RedirectStrategy; import
  * org.springframework.test.context.ContextConfiguration; import
@@ -39,16 +37,22 @@
  * 
  * @Mock private MockMvc mockMvc;
  * 
- * @Test public void OnAuthenticationSuccessTest() {
+ * @Autowired googleOAuth2SuccessHandler handler;
  * 
+ * @Test public void OnAuthenticationSuccessTest() throws Exception {
  * 
- * List<User> user=new ArrayList<>(); User user2=new User();
+ * Optional<User> user =Optional.of(new User()); User user2 = new User();
  * user2.setEmail("asd"); user2.setId(1); user2.setFirstName("sdf");
- * user2.setLastName("asd");
+ * user2.setLastName("asd"); Optional<com.rgt.app.models.Role> roles =
+ * Optional.empty();
  * 
- * Mockito.when(userRepository.findUserByEmail("asd"));
+ * 
+ * Mockito.when(userRepository.findUserByEmail("asd")).thenReturn(user);
  * Mockito.when(userRepository.save(user2)).thenReturn(user2); //
- * when(roleRepository.findById(2)).thenReturn(roles); }
+ * when(roleRepository.findById(2)).thenReturn(roles);
+ * mockMvc.perform(get("/").contentType(MediaType.ALL));
+ * 
+ * }
  * 
  * }
  */
